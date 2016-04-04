@@ -1,2 +1,2 @@
 # PowerBI_BubbleWaveGauge
-Bubble Wave Gauge based on D3 Liquid Fill Gauge
+BubbleWaveGauge is a new Graphe for PowerBI based on D3js and liquidFillGauge.js 
