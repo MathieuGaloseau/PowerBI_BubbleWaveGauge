@@ -229,9 +229,6 @@ var powerbi;
                     config.minValue = model.gaugeWaveChartSettings.parameters.minValue;
                     config.circleFillGap = model.gaugeWaveChartSettings.parameters.circleFillGap;
                     var left = (options.viewport.width / 2) + (Math.min(options.viewport.width, options.viewport.height) / 2);
-                    if (options.viewport.height < 250) {
-                        left = left + 80;
-                    }
                     this.divprogression.attr('style', "padding-left:" + left + "px;");
                     var Value = this.model.gaugeWaveChartSettings.values.pointerValue;
                     //Update value of gauge
