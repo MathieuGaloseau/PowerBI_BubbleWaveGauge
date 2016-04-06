@@ -27,7 +27,9 @@ module powerbi.visuals.samples {
          circleFillGap: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'circleFillGap' },
          valueCountUp: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'valueCountUp' },
          displayPercent: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'displayPercent' },
+		 displayPercentforevo: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'displayPercentforevo' },
 		 x100: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'x100' },
+		 x100forevo: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'x100forevo' },
 		decimalpointerValue: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'decimalpointerValue' },
 		decimalevolution: <DataViewObjectPropertyIdentifier>{ objectName: 'parameters', propertyName: 'decimalevolution' }
      },
@@ -66,7 +68,9 @@ module powerbi.visuals.samples {
      circleFillGap: number;
      valueCountUp:  boolean;
      displayPercent: boolean;
+	 displayPercentforevo:boolean;
 	 x100: boolean;
+	 x100forevo:boolean;
 	 decimalpointerValue:number;
 	 decimalevolution:number;
  };
@@ -187,8 +191,16 @@ module powerbi.visuals.samples {
                                 displayName: 'display Percent',
                                 type: { bool: true }
                             },
+                            displayPercentforevo: {
+                                displayName: 'display Percent for evo',
+                                type: { bool: true }
+                            },
                             x100: {
                                 displayName: 'x100',
+                                type: { bool: true }
+                            },
+                            x100forevo: {
+                                displayName: 'x100forevo',
                                 type: { bool: true }
                             },
 							decimalpointerValue:{
@@ -299,8 +311,10 @@ public static DefaultStyleProperties(): iGaugeWaveChartSettings {
        circleThickness: 0.05,// The outer circle thickness as a percentage of it's radius.
        circleFillGap: 0.05, // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
        valueCountUp:  true,// If true, the displayed value counts up from 0 to it's final value upon loading. If false, the final value is displayed.
-       displayPercent: true,// If true, a % symbol is displayed after the value.
+       displayPercentforevo: true,// If true, a % symbol is displayed after the value.
+	   displayPercent: true,// If true, a % symbol is displayed after the value of evolution.
 	   x100:true, //x100 if value is in % in source
+	   x100forevo:true, //x100 if value of evolution is in % in source
 	   decimalpointerValue:0,
 	   decimalevolution:2,
 	   					
@@ -354,10 +368,12 @@ public static DefaultStyleProperties(): iGaugeWaveChartSettings {
                 defaultSettings.parameters.circleFillGap =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.circleFillGap, defaultSettings.parameters.circleFillGap);
                 defaultSettings.parameters.circleThickness =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.circleThickness, defaultSettings.parameters.circleThickness);
                 defaultSettings.parameters.displayPercent =DataViewObjects.getValue<boolean>(objects, gaugeWaveChartProps.parameters.displayPercent, defaultSettings.parameters.displayPercent);
-                defaultSettings.parameters.maxValue =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.maxValue, defaultSettings.parameters.maxValue);
+                defaultSettings.parameters.displayPercentforevo =DataViewObjects.getValue<boolean>(objects, gaugeWaveChartProps.parameters.displayPercentforevo, defaultSettings.parameters.displayPercentforevo);
+				defaultSettings.parameters.maxValue =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.maxValue, defaultSettings.parameters.maxValue);
                 defaultSettings.parameters.minValue =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.minValue, defaultSettings.parameters.minValue);
                 defaultSettings.parameters.valueCountUp =DataViewObjects.getValue<boolean>(objects, gaugeWaveChartProps.parameters.valueCountUp, defaultSettings.parameters.valueCountUp);
   				defaultSettings.parameters.x100 =DataViewObjects.getValue<boolean>(objects, gaugeWaveChartProps.parameters.x100, defaultSettings.parameters.x100);
+				defaultSettings.parameters.x100forevo =DataViewObjects.getValue<boolean>(objects, gaugeWaveChartProps.parameters.x100forevo, defaultSettings.parameters.x100forevo);
   				defaultSettings.parameters.decimalpointerValue =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.decimalpointerValue, defaultSettings.parameters.decimalpointerValue);
   				defaultSettings.parameters.decimalevolution =DataViewObjects.getValue<number>(objects, gaugeWaveChartProps.parameters.decimalevolution, defaultSettings.parameters.decimalevolution);
   		 
@@ -386,19 +402,21 @@ public static DefaultStyleProperties(): iGaugeWaveChartSettings {
                 var values = dataViewCategorical.values;
                 var metadataColumns = dataView.metadata.columns;
 
+
+
                 for (var i = 0; i < values.length; i++) {
 
                     var col = metadataColumns[i];
                     var currentVal = values[i].values[idx] || 0;
                     if (col && col.roles) {
                      if (col.roles[gaugeWaveChartRoleNames.evolution]) {
-                        Evolution = currentVal.toFixed(defaultSettings.parameters.decimalevolution)/1;
+                        Evolution = currentVal;
                     } else if (col.roles[gaugeWaveChartRoleNames.pointerValue]) {
-                        PointerValue = currentVal.toFixed(defaultSettings.parameters.decimalpointerValue)/1;
+                        PointerValue = currentVal;
                     }
                 }
             }
-
+ 
             if (Evolution === undefined) {
                 Evolution = defaultSettings.values.evolution;
             }
@@ -502,6 +520,7 @@ public static DefaultStyleProperties(): iGaugeWaveChartSettings {
                 //parameters
                 config.valueCountUp =model.gaugeWaveChartSettings.parameters.valueCountUp;
                 config.displayPercent =model.gaugeWaveChartSettings.parameters.displayPercent;
+				config.displayPercentforevo =model.gaugeWaveChartSettings.parameters.displayPercentforevo;
                 config.circleThickness =model.gaugeWaveChartSettings.parameters.circleThickness;
                 config.maxValue =model.gaugeWaveChartSettings.parameters.maxValue;
                 config.minValue =model.gaugeWaveChartSettings.parameters.minValue;
@@ -509,22 +528,49 @@ public static DefaultStyleProperties(): iGaugeWaveChartSettings {
 				
 				
  var left = (options.viewport.width/2) + (Math.min(options.viewport.width,options.viewport.height)/2);
+
+ 
+ 
+var tofixedevo = this.model.gaugeWaveChartSettings.parameters.decimalevolution;
+var tofixedvalue = this.model.gaugeWaveChartSettings.parameters.decimalpointerValue;
+
+
+
 this.divprogression.attr('style',"padding-left:"+left+"px;");
 var Value = this.model.gaugeWaveChartSettings.values.pointerValue;
-
-                //Update value of gauge
-				if(model.gaugeWaveChartSettings.parameters.x100)
-				{
-					Value = this.model.gaugeWaveChartSettings.values.pointerValue * 100;
-				}
 				
+                
+if(this.model.gaugeWaveChartSettings.parameters.x100)
+ {
+    Value =Value*100;
+    Value= parseFloat(Value.toFixed(tofixedvalue));
+ }
+ 
+ 
+ 
+ 
                this.gauge.update(Value,config,options.viewport.width,options.viewport.height);
 				
                 //Update evolution picture (arrow up or down) 
                 //if evolution value is polsitive then picture is arrow up (and green)
                 //if evolution value is negative then picture is arrow down (and red)
-                this.progressionText.text(this.model.gaugeWaveChartSettings.values.evolution);
-                
+               
+                var evo =  this.model.gaugeWaveChartSettings.values.evolution;
+                if(evo != "" && evo!= "0")
+                {
+                    
+                    
+ if(this.model.gaugeWaveChartSettings.parameters.x100forevo)
+ {
+    evo =evo*100;
+ }
+ 
+  evo= parseFloat(evo.toFixed(tofixedevo));
+ 
+              evo =  config.displayPercentforevo?evo+"%":evo;
+               
+                this.progressionText.text(evo);
+                 this.divprogression.style("display","block");
                 if(this.model.gaugeWaveChartSettings.values.evolution > 0){
                     this.imgprogression_red.style("display","none");
                     this.imgprogression_green.style("display","block");
@@ -532,7 +578,13 @@ var Value = this.model.gaugeWaveChartSettings.values.pointerValue;
                 {
                     this.imgprogression_red.style("display","block");
                     this.imgprogression_green.style("display","none");
-                }   
+                }  
+                 }else
+                 {
+                     this.divprogression.style("display","none");
+                 }
+                 
+                  
             }
 
             //generate a guid for id of each items
@@ -594,8 +646,10 @@ var Value = this.model.gaugeWaveChartSettings.values.pointerValue;
               circleThickness:this.model.gaugeWaveChartSettings.parameters.circleThickness,
               circleFillGap:this.model.gaugeWaveChartSettings.parameters.circleFillGap,
               valueCountUp:this.model.gaugeWaveChartSettings.parameters.valueCountUp,
+              displayPercentforevo:this.model.gaugeWaveChartSettings.parameters.displayPercentforevo,
               displayPercent:this.model.gaugeWaveChartSettings.parameters.displayPercent,
 			  x100:this.model.gaugeWaveChartSettings.parameters.x100,
+              x100forevo:this.model.gaugeWaveChartSettings.parameters.x100forevo,
 			  decimalpointerValue:this.model.gaugeWaveChartSettings.parameters.decimalpointerValue,
 			  decimalevolution:this.model.gaugeWaveChartSettings.parameters.decimalevolution
           }
@@ -656,6 +710,7 @@ var sampleImgReeg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDUAAAQACAYAA
         textSize: 1, // The relative height of the text to display in the wave circle. this value is / by 10 
         valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading. If false, the final value is displayed.
         displayPercent: true, // If true, a % symbol is displayed after the value.
+        displayPercentforevo: true, // If true, a % symbol is displayed after the value of evoution.
         textColor: "#045681", // The color of the value text when the wave does not overlap it.
         waveTextColor: "#A4DBf8", // The color of the value text when the wave overlaps it.
 		width: 150,//the width of Gauge.
