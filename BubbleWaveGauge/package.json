@@ -39,7 +39,7 @@
     ],
     "visual": {
         "name": "BubbleWaveGauge",
-        "version": "1.0.5",
+        "version": "1.0.6",
         "displayName": "BubbleWaveGauge",
         "guid": "WaveGauge1458493894444",
         "description": "BubbleWaveGauge is a new Graphe for PowerBI based on D3js and liquidFillGauge.js",

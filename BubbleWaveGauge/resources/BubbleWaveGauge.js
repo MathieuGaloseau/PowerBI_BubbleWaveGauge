@@ -247,9 +247,11 @@ var powerbi;
                     var tofixedvalue = this.model.gaugeWaveChartSettings.parameters.decimalpointerValue;
                     this.divprogression.attr('style', "padding-left:" + left + "px;");
                     var Value = this.model.gaugeWaveChartSettings.values.pointerValue;
+                    //Use X100 Parameter
                     if (this.model.gaugeWaveChartSettings.parameters.x100) {
                         Value = Value * 100;
                     }
+                    //Use decimalpointerValue Parameter
                     Value = parseFloat(Value.toFixed(tofixedvalue));
                     this.gauge.update(Value, config, options.viewport.width, options.viewport.height);
                     //Update evolution picture (arrow up or down) 
