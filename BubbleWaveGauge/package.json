@@ -1,8 +1,8 @@
 {
-    "build": "13.0.1100.270",
+    "build": "13.0.1100.319",
     "version": "1.0.0",
     "author": {
-        "name": "galoseau mathieu",
+        "name": "Mathieu Galoseau",
         "email": "galoseau.mathieu@gmail.com"
     },
     "resources": [
@@ -39,10 +39,10 @@
     ],
     "visual": {
         "name": "BubbleWaveGauge",
-        "version": "1.0.0",
+        "version": "1.0.4",
         "displayName": "BubbleWaveGauge",
-        "guid": "WaveGauge1458677153720",
-        "description": "BubbleWaveGauge is a new Graphe for PowerBI based on D3js and liquidFillGauge.js ",
+        "guid": "YourVisual1459159183796",
+        "description": "BubbleWaveGauge is a new Graphe for PowerBI based on D3js and liquidFillGauge.js",
         "supportUrl": "https://github.com/MathieuGaloseau/PowerBI_BubbleWaveGauge/wiki",
         "githubUrl": "https://github.com/MathieuGaloseau/PowerBI_BubbleWaveGauge"
     },
