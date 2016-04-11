@@ -108,7 +108,7 @@ module powerbi.visuals.samples {
             ],
             objects: {
                 color: {
-                        displayName: data.createDisplayNameGetter('Color'),
+                        displayName: "Color",
                         properties: {
                             circleColor: {
                                 displayName: 'Circle',
@@ -119,17 +119,17 @@ module powerbi.visuals.samples {
                                 type: { fill: { solid: { color: true } } }
                             }, 
                             textColor: {
-                                displayName: 'text',
+                                displayName: 'Text',
                                 type: { fill: { solid: { color: true } } }
                             },
                             waveTextColor: {
-                                displayName: 'wave Text',
+                                displayName: 'Wave Text',
                                 type: { fill: { solid: { color: true } } }
                             }
                         }
                 },
                 wave: {
-                        displayName: data.createDisplayNameGetter('Wave'),
+                        displayName: "Wave",
                         properties: {
                             waveCount: {
                                 displayName: 'Count',
@@ -166,69 +166,69 @@ module powerbi.visuals.samples {
                         }
                 },
                 parameters: {
-                        displayName: data.createDisplayNameGetter('Parameters'),
+                        displayName: "Parameters",
                         properties: {
                             maxValue: {
-                                displayName: 'max Value',
+                                displayName: 'Max Value',
                                 type: { numeric: true }
                             },
                             minValue: {
-                                displayName: 'min Value',
+                                displayName: 'Min Value',
                                 type: { numeric: true }
                             },
                             circleThickness: {
-                                displayName: 'circle Thickness',
+                                displayName: 'Circle Thickness',
                                 type: { numeric: true }
                             }
                             ,
                             circleFillGap: {
-                                displayName: 'circle FillGap',
+                                displayName: 'Circle FillGap',
                                 type: { numeric: true }
                             },
                             valueCountUp: {
-                                displayName: 'value Count Up',
+                                displayName: 'Value Count Up',
                                 type: { bool: true }
                             },
                             displayPercent: {
-                                displayName: 'display Percent',
+                                displayName: 'Display Percent',
                                 type: { bool: true }
                             },
                             displayPercentforevo: {
-                                displayName: 'display Percent for evo',
+                                displayName: 'Display Percent for evo',
                                 type: { bool: true }
                             },
                             x100: {
-                                displayName: 'x100',
+                                displayName: 'X100',
                                 type: { bool: true }
                             },
                             x100forevo: {
-                                displayName: 'x100 for evolution',
+                                displayName: 'X100 for evolution',
                                 type: { bool: true }
                             },
 							decimalpointerValue:{
-								displayName:'decimale pointer Value',
+								displayName:'Decimale pointer Value',
 								type:{numeric:true}
 								
 							},
 							decimalevolution:{
-								displayName:'decimale volution',
+								displayName:'Decimale volution',
 								type:{numeric:true}
 							},
                             disableevo:{
-                                displayName:'disable evolution',
+                                displayName:'Disable evolution',
 								type:{bool:true}
                             } 
                         }
                 },
                 text: {
-                        displayName: data.createDisplayNameGetter('Parameters'),
+                        displayName: "Text",
                         properties: {
                           textVertPosition: {
-                            displayName: 'text Vert Position',
+                            displayName: 'Text Vert Position',
                             type: { numeric: true }
                         },
                         textSize: {
-                            displayName: 'text Size',
+                            displayName: 'Text Size',
                             type: { numeric: true }
                         }
                     },
@@ -241,7 +241,7 @@ module powerbi.visuals.samples {
                             type: { any: true }
                         },
                         evolution: {
-                            displayName: 'evolution',
+                            displayName: 'Evolution',
                             type: { any: true }
                         }
                     }
@@ -560,12 +560,11 @@ var Value = this.model.gaugeWaveChartSettings.values.pointerValue;
 if(this.model.gaugeWaveChartSettings.parameters.x100)
  {
     Value =Value*100;
-    Value= parseFloat(Value.toFixed(tofixedvalue));
+   
  }
  
- 
- 
- 
+  Value= parseFloat(Value.toFixed(tofixedvalue));
+
                this.gauge.update(Value,config,options.viewport.width,options.viewport.height);
 				
                 //Update evolution picture (arrow up or down) 
@@ -952,7 +951,6 @@ function loadLiquidFillGauge(elementId, value,config) {
                 fillCircleMargin = circleThickness + circleFillGap;
                 fillCircleRadius = radius - fillCircleMargin;
                 waveHeight = fillCircleRadius*waveHeightScale(fillPercent*100);
-
                 waveLength = fillCircleRadius*2/config.waveCount;
                 waveClipCount = 1+config.waveCount;
                 waveClipWidth = waveLength*waveClipCount;
@@ -1023,7 +1021,6 @@ function loadLiquidFillGauge(elementId, value,config) {
     .y0(function(d) { return waveScaleY(Math.sin(Math.PI*2*config.waveOffset*-1 + Math.PI*2*(1-config.waveCount) + d.y*2*Math.PI));} )
     .y1(function(d) { return (fillCircleRadius*2 + waveHeight); } );
 
-
     fillCircleGroupcircle.attr("cx", radius)
     .attr("cy", radius)
     .attr("r", fillCircleRadius)
@@ -1043,6 +1040,7 @@ function loadLiquidFillGauge(elementId, value,config) {
             var i = d3.interpolate(this.textContent, textFinalValue);
             return function(t) { this.textContent = textRounder(i(t)) + percentText; }
         };
+        
         text1.transition()
         .duration(config.waveRiseTime)
         .tween("text", textTween);
